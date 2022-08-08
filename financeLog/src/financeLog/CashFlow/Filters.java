@@ -1,7 +1,9 @@
 package financeLog.CashFlow;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;  
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;  
 import java.util.ArrayList;
 
@@ -61,15 +63,15 @@ public class Filters {
 		
 		filteredPayments.clear();
 		
-		Date dateAfter;
-		Date dateBefore;
+		LocalDate dateAfter = LocalDate.parse(after).minusDays(1);
+		LocalDate dateBefore = LocalDate.parse(before).plusDays(1);
 		
-		dateAfter = new SimpleDateFormat("yyyy-MM-dd").parse(after);
-		dateBefore = new SimpleDateFormat("yyyy-MM-dd").parse(before);
+		Date simpleDateAfter = new SimpleDateFormat("yyyy-MM-dd").parse(dateAfter.toString());
+		Date simpleDateBefore = new SimpleDateFormat("yyyy-MM-dd").parse(dateBefore.toString());
 		
 		for (Payment payment : OperationsRecord.getPayments()) {
 			
-			if(payment.getTimestamp().after(dateAfter) && payment.getTimestamp().before(dateBefore)) {
+			if(payment.getTimestamp().after(simpleDateAfter) && payment.getTimestamp().before(simpleDateBefore)) {
 				filteredPayments.add(payment);
 			}
 		}
