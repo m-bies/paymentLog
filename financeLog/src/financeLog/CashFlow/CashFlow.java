@@ -3,6 +3,7 @@ package financeLog.CashFlow;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,12 +19,12 @@ public class CashFlow {
 	private Currency currency;
 	private int currencyIndex;
 	private String categoryName;
-
-	//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy"); //("dd/MM/YYYY HH:mm:ss")
-	static LocalDate now = LocalDate.now();
-	
-	
 	private Date timestamp;
+	
+	//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy"); //("dd/MM/YYYY HH:mm:ss")
+	
+	static LocalDate now = LocalDate.now();
+	Locale locale = new Locale("pl", "PL");
 	
 	//konstruktory
 	public CashFlow(double amount, String categoryName, String comment, int currencyIndex, String timestamp) {
@@ -34,15 +35,15 @@ public class CashFlow {
 			this.timestamp = new SimpleDateFormat("yyyy-MM-dd").parse(timestamp);
 		} 
 		catch (ParseException e) {
-			System.out.println("Nie udało się utworzyć timestamp, tworzę płatność z dzisiejszą datą");
 			try {
-				this.timestamp = new SimpleDateFormat("yyyy-MM-dd").parse(createCurrentDate());
+				this.timestamp = new SimpleDateFormat("yyyy-MM-dd").parse(printCurrentDate());
 			} 
 			catch (ParseException e1) {
 				e1.printStackTrace();
 				System.out.println("Nie udało się utworzyć timestamp");
 			}
 		}
+		
 		this.currencyIndex = currencyIndex; 
 		this.currency = Currency.getCurrency(currencyIndex);
 		this.category = Category.setCategory(categoryName);
@@ -50,30 +51,23 @@ public class CashFlow {
 	}
 
 	public CashFlow(double amount, String categoryName, String comment, int currencyIndex) {
-		this(amount, categoryName, comment, currencyIndex, createCurrentDate());
+		this(amount, categoryName, comment, currencyIndex, printCurrentDate());
 		this.amount = amount; 						
 		this.comment = comment;				
 		this.currencyIndex = currencyIndex; 
 		this.currency = Currency.getCurrency(currencyIndex);
 		this.category = Category.setCategory(categoryName);
-		
-		try {
-			this.timestamp = new SimpleDateFormat("yyyy-MM-dd").parse(createCurrentDate());
-		} 
-		catch (ParseException e) {
-			System.out.println("Nie udało się utworzyć timestamp");
-		}
 	}
 	
 	public CashFlow(double amount, String category) {
-		this(amount, category, "", 0, createCurrentDate());			
+		this(amount, category, "", 0, printCurrentDate());			
 	}
 	//konstruktory end
 	
 	
 	
 	public String toString() {
-		return String.format("#%d %s %-15s %10.2f %s %-3s", getId(), getTimestamp(), getCategory().getName(), getAmount(), "zł", getComment()); 
+		return String.format("#%-4d %-13s %-15s %10.2f %-5s %-3s", getId(), getTimestampAsString(), getCategory().getName(), getAmount(), "zł", getComment()); 
 	}
 
 	public int getId() {
@@ -111,7 +105,7 @@ public class CashFlow {
 	}
 	
 	public String getTimestampAsString() {
-		return DateFormat.getDateInstance(DateFormat.MEDIUM).format(timestamp);
+		return DateFormat.getDateInstance(DateFormat.DEFAULT, locale).format(timestamp);
 	}
 	
 	public Category getCategory() {
@@ -125,7 +119,7 @@ public class CashFlow {
 	public void setTimestamp(String date) {
 				
 		try {
-			Date newTimestamp = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+			Date newTimestamp = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 			this.timestamp = newTimestamp;
 		}
 		catch(Exception e) {
@@ -133,8 +127,15 @@ public class CashFlow {
 		}
 	}
 	
-	public static String createCurrentDate() {
+	public static String printCurrentDate() {
 		
 		return now.toString();
 	}
+	
+	public static LocalDate returnCurrentDate() {
+		
+		return now;
+	}
+	
+	
 }

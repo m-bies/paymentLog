@@ -16,13 +16,13 @@ public class Payment extends CashFlow {
 	}
 	
 	public Payment(double amount, String categoryName, String comment, int currencyIndex) {
-		this(amount, categoryName, comment, currencyIndex, createCurrentDate());
+		this(amount, categoryName, comment, currencyIndex, printCurrentDate());
 		OperationsRecord.quickAddPayment(this);
 		setId(nextId.getAndIncrement());
 		
 	}
 	
 	public Payment(double amount, String categoryName) {
-		this(amount, categoryName, "", 0, createCurrentDate());	
+		this(amount, categoryName, "", 0, printCurrentDate());	
 	}
 }

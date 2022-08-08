@@ -61,14 +61,11 @@ public class Filters {
 		
 		filteredPayments.clear();
 		
-		after = "01/01/2000";
-		before = "10/10/2100";
-		
 		Date dateAfter;
 		Date dateBefore;
 		
-		dateAfter = new SimpleDateFormat("dd/MM/yyyy").parse(after);
-		dateBefore = new SimpleDateFormat("dd/MM/yyyy").parse(before);
+		dateAfter = new SimpleDateFormat("yyyy-MM-dd").parse(after);
+		dateBefore = new SimpleDateFormat("yyyy-MM-dd").parse(before);
 		
 		for (Payment payment : OperationsRecord.getPayments()) {
 			
@@ -79,7 +76,7 @@ public class Filters {
 		return toString(filteredPayments);
 	}	
 	
-	public static String toString(ArrayList<Payment> filteredPayments2) {
+	public static String toString(ArrayList<Payment> filteredPayments) {
 		return filteredPayments.toString().replace("[", " ").replace("]", "").replace(",", "\n");
 	}
 }

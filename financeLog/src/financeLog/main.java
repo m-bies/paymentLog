@@ -1,6 +1,7 @@
 package financeLog;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import financeLog.CashFlow.Balance;
@@ -16,12 +17,12 @@ import welcomeScreen.WelcomeScreen;
 
 public class main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 
 		Currency.setDefaultCurrencies();
 		
 		Payment pay1 = new Payment(100, "Żabka", "Fajki i żywność", 0, "2022-07-01");
-		Payment pay2 = new Payment(200, "Biedronka", "Żywność i chemia", 0);
+		Payment pay2 = new Payment(200, "Biedronka", "Żywność i chemia", 0, "2022-07-10");
 		Payment pay3 = new Payment(550, "Decathlon", "Rower", 0);
 		Payment pay4 = new Payment(200, "Paliwo");
 		Payment pay5 = new Payment(10, "Żabka", "Watermelon lemonade", 0);
@@ -44,7 +45,7 @@ public class main {
 		//System.out.println(Balance.getBalance());
 		
 		//Category.printCategories();
-		
+
 		System.out.println("\nŻabka only: ");
 		
 		System.out.println(Filters.categoryFilter("Żabka"));
@@ -61,11 +62,9 @@ public class main {
 		
 		System.out.println(Filters.lessThanAmountFilter(99));
 		
-		System.out.println();
+		System.out.println("\nDate between: 30/06/2022 - 10/07/2022");
 		
-		System.out.println(pay1.getTimestampAsString());
-		System.out.println(pay2.getTimestamp());
-		
-		System.out.println(CashFlow.createCurrentDate());
+		System.out.println(Filters.timestampIsBetween("2022-06-30", "2022-07-10"));
+				
 	}
 }
